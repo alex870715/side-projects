@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資安防護遊戲 | Cybersecurity Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 開始畫面 -->
+        <div id="startScreen" class="screen active">
+            <div class="game-header">
+                <h1><i class="fas fa-shield-alt"></i> 資安防護遊戲</h1>
+                <p class="subtitle">學習資安知識，保護數位安全</p>
+            </div>
+            
+            <div class="game-intro">
+                <div class="intro-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>密碼安全</h3>
+                    <p>學習建立強密碼的重要性</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-fish"></i>
+                    <h3>釣魚攻擊</h3>
+                    <p>識別可疑的釣魚郵件</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-user-secret"></i>
+                    <h3>社交工程</h3>
+                    <p>保護個人資訊不被竊取</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-wifi"></i>
+                    <h3>網路安全</h3>
+                    <p>安全上網的基本原則</p>
+                </div>
+            </div>
+            
+            <div class="difficulty-selection">
+                <h3>選擇難度等級</h3>
+                <div class="difficulty-options">
+                    <div class="difficulty-card" data-difficulty="easy">
+                        <div class="difficulty-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h4>初級模式</h4>
+                        <p>基礎資安知識問答</p>
+                        <ul>
+                            <li>密碼安全</li>
+                            <li>釣魚攻擊識別</li>
+                            <li>社交工程防護</li>
+                            <li>網路安全基礎</li>
+                        </ul>
+                    </div>
+                    <div class="difficulty-card" data-difficulty="advanced">
+                        <div class="difficulty-icon">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h4>進階模式</h4>
+                        <p>專業攻防與程式碼挑戰</p>
+                        <ul>
+                            <li>SQL注入防護</li>
+                            <li>XSS攻擊防護</li>
+                            <li>程式碼安全審查</li>
+                            <li>網路滲透測試</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="startGame" class="start-btn" disabled>
+                <i class="fas fa-play"></i> 開始遊戲
+            </button>
+        </div>
+
+        <!-- 初級遊戲畫面 -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="game-info">
+                    <h2>關卡 <span id="currentLevel">1</span> / <span id="totalLevels">5</span></h2>
+                    <div class="score">分數: <span id="score">0</span></div>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="question-container">
+                    <h3 id="questionTitle">選擇正確的密碼</h3>
+                    <p id="questionText">哪個密碼比較安全？</p>
+                </div>
+
+                <div class="options-container">
+                    <!-- 選項將由JavaScript動態生成 -->
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="nextQuestion" class="next-btn" disabled>
+                    <i class="fas fa-arrow-right"></i> 下一題
+                </button>
+            </div>
+        </div>
+
+        <!-- 進階遊戲畫面 -->
+        <div id="advancedGameScreen" class="screen">
+            <div class="game-header">
+                <div class="game-info">
+                    <h2>進階關卡 <span id="advancedCurrentLevel">1</span> / <span id="advancedTotalLevels">4</span></h2>
+                    <div class="score">分數: <span id="advancedScore">0</span></div>
+                </div>
+                <div class="progress-bar">
+                    <div id="advancedProgressFill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="advanced-game-content">
+                <div class="challenge-container">
+                    <h3 id="challengeTitle">SQL注入防護挑戰</h3>
+                    <p id="challengeDescription">修復以下程式碼中的SQL注入漏洞</p>
+                    
+                    <div class="code-editor">
+                        <div class="code-header">
+                            <span class="language-tag">JavaScript</span>
+                            <span class="vulnerability-tag">發現漏洞</span>
+                        </div>
+                        <pre id="codeEditor"><code id="codeContent"></code></pre>
+                    </div>
+
+                    <div class="code-options">
+                        <h4>選擇正確的修復方案：</h4>
+                        <div id="codeOptions" class="code-options-container">
+                            <!-- 程式碼選項將由JavaScript動態生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="runCode" class="run-btn">
+                    <i class="fas fa-play"></i> 執行程式碼
+                </button>
+                <button id="nextAdvancedQuestion" class="next-btn" disabled>
+                    <i class="fas fa-arrow-right"></i> 下一關
+                </button>
+            </div>
+        </div>
+
+        <!-- 結果畫面 -->
+        <div id="resultScreen" class="screen">
+            <div class="result-header">
+                <h2>遊戲結束！</h2>
+                <div class="final-score">
+                    <span>最終分數: </span>
+                    <span id="finalScore">0</span>
+                </div>
+                <div class="difficulty-badge">
+                    <span id="difficultyBadge">初級模式</span>
+                </div>
+            </div>
+
+            <div class="result-content">
+                <div class="score-breakdown">
+                    <h3>得分詳情</h3>
+                    <div id="scoreBreakdown"></div>
+                </div>
+
+                <div class="tips-section">
+                    <h3>資安小提醒</h3>
+                    <div id="securityTips"></div>
+                </div>
+            </div>
+
+            <div class="result-controls">
+                <button id="playAgain" class="play-again-btn">
+                    <i class="fas fa-redo"></i> 再玩一次
+                </button>
+                <button id="backToStart" class="back-btn">
+                    <i class="fas fa-home"></i> 回到首頁
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

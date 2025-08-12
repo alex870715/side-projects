@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待辦事項清單 | Todo List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-check-circle"></i> 我的待辦清單</h1>
+            <p class="subtitle">管理您的任務，提升工作效率</p>
+        </header>
+
+        <div class="todo-app">
+            <div class="input-section">
+                <div class="input-group">
+                    <input type="text" id="todoInput" placeholder="輸入新的待辦事項..." maxlength="100">
+                    <input type="date" id="todoDate" class="date-input" placeholder="建立日期">
+                    <input type="date" id="todoDueDate" class="date-input" placeholder="到期日期">
+                    <button id="addBtn" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="list">
+                    <i class="fas fa-list"></i> 清單視圖
+                </button>
+                <button class="view-btn" data-view="calendar">
+                    <i class="fas fa-calendar-alt"></i> 月曆視圖
+                </button>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="active">進行中</button>
+                <button class="filter-btn" data-filter="completed">已完成</button>
+                <button class="filter-btn" data-filter="today">今日</button>
+                <button class="filter-btn" data-filter="upcoming">即將到期</button>
+                <button class="filter-btn" data-filter="overdue">已逾期</button>
+            </div>
+
+            <div class="stats">
+                <span id="totalTasks">總計: 0 項</span>
+                <span id="completedTasks">已完成: 0 項</span>
+                <span id="todayTasks">今日: 0 項</span>
+                <span id="overdueTasks">逾期: 0 項</span>
+            </div>
+
+            <!-- 清單視圖 -->
+            <div id="listView" class="view-content active">
+                <ul id="todoList" class="todo-list">
+                    <!-- 待辦事項會在這裡動態生成 -->
+                </ul>
+            </div>
+
+            <!-- 月曆視圖 -->
+            <div id="calendarView" class="view-content">
+                <div class="calendar-header">
+                    <button id="prevMonth" class="calendar-nav">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 id="currentMonth">2024年1月</h3>
+                    <button id="nextMonth" class="calendar-nav">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekdays">
+                        <div>日</div>
+                        <div>一</div>
+                        <div>二</div>
+                        <div>三</div>
+                        <div>四</div>
+                        <div>五</div>
+                        <div>六</div>
+                    </div>
+                    <div id="calendarDays" class="calendar-days">
+                        <!-- 月曆日期會在這裡動態生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="clearCompleted" class="clear-btn">
+                    <i class="fas fa-trash"></i> 清除已完成
+                </button>
+                <button id="clearAll" class="clear-btn">
+                    <i class="fas fa-trash-alt"></i> 清除全部
+                </button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>使用 LocalStorage 儲存您的待辦事項</p>
+        </footer>
+    </div>
+
+    <!-- 日期選擇器彈窗 -->
+    <div id="datePickerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>選擇日期</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="date-input-group">
+                    <label>建立日期:</label>
+                    <input type="date" id="modalCreateDate">
+                </div>
+                <div class="date-input-group">
+                    <label>到期日期:</label>
+                    <input type="date" id="modalDueDate">
+                </div>
+                <div class="modal-actions">
+                    <button id="confirmDate" class="btn-primary">確認</button>
+                    <button id="cancelDate" class="btn-secondary">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
