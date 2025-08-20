@@ -4,8 +4,10 @@
   "description": "台股AI分析系統 - 整合技術指標分析和AI智能建議的股票分析工具",
   "main": "index.html",
   "scripts": {
-    "start": "npx http-server . -p 8080 -o",
+    "start": "node proxy-server.js",
     "dev": "npx live-server --port=8080 --open=/index.html",
+    "static": "npx http-server . -p 8080 -o",
+    "proxy": "node proxy-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -26,7 +28,11 @@
     "http-server": "^14.1.1",
     "live-server": "^1.2.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.7"
+  },
   "engines": {
     "node": ">=14.0.0"
   },

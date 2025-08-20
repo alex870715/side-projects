@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股AI分析系統 - 本地測試版</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 台股AI分析系統</h1>
+            <p>本地測試版 - 整合技術指標與AI智能分析</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="stockSymbol" placeholder="輸入股票代號 (例: 2330, 2454)" maxlength="10">
+                <button id="searchBtn" onclick="searchStock()">🔍 搜尋</button>
+            </div>
+            <div class="popular-stocks">
+                <span>熱門股票：</span>
+                <button class="stock-tag" onclick="selectStock('2330')">台積電 (2330)</button>
+                <button class="stock-tag" onclick="selectStock('2454')">聯發科 (2454)</button>
+                <button class="stock-tag" onclick="selectStock('2317')">鴻海 (2317)</button>
+                <button class="stock-tag" onclick="selectStock('2412')">中華電 (2412)</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="stock-info" id="stockInfo" style="display: none;">
+                <div class="info-card">
+                    <h2 id="stockName">股票名稱</h2>
+                    <div class="price-info">
+                        <span class="current-price" id="currentPrice">--</span>
+                        <span class="price-change" id="priceChange">--</span>
+                        <span class="change-percent" id="changePercent">--</span>
+                    </div>
+                    <div class="market-info">
+                        <div class="info-item">
+                            <span class="label">開盤價：</span>
+                            <span id="openPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">最高價：</span>
+                            <span id="highPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">最低價：</span>
+                            <span id="lowPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">成交量：</span>
+                            <span id="volume">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="indicators-panel">
+                <h3>📊 技術指標選擇</h3>
+                <div class="indicator-buttons">
+                    <button class="indicator-btn active" data-indicator="candlestick" onclick="toggleIndicator(this, 'candlestick')">K線圖</button>
+                    <button class="indicator-btn" data-indicator="sma" onclick="toggleIndicator(this, 'sma')">移動平均</button>
+                    <button class="indicator-btn" data-indicator="macd" onclick="toggleIndicator(this, 'macd')">MACD</button>
+                    <button class="indicator-btn" data-indicator="rsi" onclick="toggleIndicator(this, 'rsi')">RSI</button>
+                    <button class="indicator-btn" data-indicator="bollinger" onclick="toggleIndicator(this, 'bollinger')">布林帶</button>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="stockChart"></canvas>
+            </div>
+
+            <div class="ai-analysis" id="aiAnalysis" style="display: none;">
+                <h3>🤖 AI分析報告</h3>
+                <div class="analysis-content">
+                    <div class="analysis-card">
+                        <h4>📈 趨勢分析</h4>
+                        <p id="trendAnalysis">載入中...</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>💡 操作建議</h4>
+                        <p id="recommendation">載入中...</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>⚠️ 風險評估</h4>
+                        <p id="riskAssessment">載入中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>正在分析股票資料...</p>
+        </div>
+    </div>
+
+    <script>
+        // 檢查是否成功載入所有依賴
+        console.log('🔍 系統檢查：');
+        console.log('Chart.js:', typeof Chart !== 'undefined' ? '✅ 已載入' : '❌ 未載入');
+        
+        // 如果real-api-client.js載入失敗，使用內建版本
+        if (typeof DirectStockAPIClient === 'undefined') {
+            console.log('⚠️ DirectStockAPIClient未載入，使用內建版本');
+            
+            // 簡化版API客戶端
+            class DirectStockAPIClient {
+                async getStockData(symbol) {
+                    console.log(`🔄 獲取 ${symbol} 的股票資料...`);
+                    
+                    // 模擬API延遲
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    const baseData = {
+                        '2330': { price: 625, name: '台積電', volatility: 0.03 },
+                        '2454': { price: 890, name: '聯發科', volatility: 0.04 },
+                        '2317': { price: 112, name: '鴻海', volatility: 0.025 },
+                        '2412': { price: 123, name: '中華電信', volatility: 0.02 }
+                    };
+                    
+                    const base = baseData[symbol] || { price: 100, name: `股票 ${symbol}`, volatility: 0.03 };
+                    
+                    // 生成模擬但接近真實的資料
+                    const timeVariation = Math.sin(Date.now() / 1000000) * 0.01;
+                    const randomVariation = (Math.random() - 0.5) * base.volatility;
+                    const priceChange = (timeVariation + randomVariation) * base.price;
+                    const currentPrice = base.price + priceChange;
+                    
+                    return {
+                        symbol: symbol,
+                        name: base.name,
+                        price: parseFloat(currentPrice.toFixed(2)),
+                        change: parseFloat(priceChange.toFixed(2)),
+                        changePercent: parseFloat((priceChange / base.price * 100).toFixed(2)),
+                        open: parseFloat((base.price - priceChange * 0.3).toFixed(2)),
+                        high: parseFloat((currentPrice + Math.abs(priceChange * 0.5)).toFixed(2)),
+                        low: parseFloat((currentPrice - Math.abs(priceChange * 0.7)).toFixed(2)),
+                        volume: Math.floor((Math.random() * 0.5 + 0.5) * 50000000),
+                        history: this.generateHistory(base.price, base.volatility, 30),
+                        dataSource: '本地智能模擬',
+                        timestamp: new Date().toISOString()
+                    };
+                }
+                
+                generateHistory(basePrice, volatility, days) {
+                    const data = [];
+                    let price = basePrice * 0.95;
+                    
+                    for (let i = days - 1; i >= 0; i--) {
+                        const date = new Date();
+                        date.setDate(date.getDate() - i);
+                        
+                        const change = (Math.random() - 0.5) * volatility * price;
+                        const open = price;
+                        const close = open + change;
+                        const high = Math.max(open, close) + Math.random() * 0.02 * price;
+                        const low = Math.min(open, close) - Math.random() * 0.02 * price;
+                        
+                        data.push({
+                            date: date.toISOString().split('T')[0],
+                            open: parseFloat(open.toFixed(2)),
+                            high: parseFloat(high.toFixed(2)),
+                            low: parseFloat(low.toFixed(2)),
+                            close: parseFloat(close.toFixed(2)),
+                            volume: Math.floor((Math.random() * 0.5 + 0.5) * 10000000)
+                        });
+                        
+                        price = close;
+                    }
+                    
+                    return data;
+                }
+            }
+        }
+        
+        console.log('DirectStockAPIClient:', typeof DirectStockAPIClient !== 'undefined' ? '✅ 已載入' : '❌ 未載入');
+    </script>
+
+    <script src="real-api-client.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        // 啟動檢查
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 台股AI分析系統 - 本地測試版已初始化');
+            
+            setTimeout(() => {
+                if (typeof selectStock === 'function') {
+                    console.log('✅ 所有功能已就緒，自動載入台積電資料');
+                    selectStock('2330');
+                } else {
+                    console.error('❌ selectStock函數未載入');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
