@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股AI分析系統</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.29.3/date-fns.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 台股AI分析系統</h1>
+            <p>專業的股票分析工具，整合技術指標與AI智能分析</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="stockSymbol" placeholder="輸入股票代號 (例: 2330, 2454)" maxlength="10">
+                <button id="searchBtn" onclick="searchStock()">🔍 搜尋</button>
+            </div>
+            <div class="popular-stocks">
+                <span>熱門股票：</span>
+                <button class="stock-tag" onclick="selectStock('2330')">台積電 (2330)</button>
+                <button class="stock-tag" onclick="selectStock('2454')">聯發科 (2454)</button>
+                <button class="stock-tag" onclick="selectStock('2317')">鴻海 (2317)</button>
+                <button class="stock-tag" onclick="selectStock('2412')">中華電 (2412)</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="stock-info" id="stockInfo" style="display: none;">
+                <div class="info-card">
+                    <h2 id="stockName">股票名稱</h2>
+                    <div class="price-info">
+                        <span class="current-price" id="currentPrice">--</span>
+                        <span class="price-change" id="priceChange">--</span>
+                        <span class="change-percent" id="changePercent">--</span>
+                    </div>
+                    <div class="market-info">
+                        <div class="info-item">
+                            <span class="label">開盤價：</span>
+                            <span id="openPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">最高價：</span>
+                            <span id="highPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">最低價：</span>
+                            <span id="lowPrice">--</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">成交量：</span>
+                            <span id="volume">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="indicators-panel">
+                <h3>📊 技術指標選擇</h3>
+                <div class="indicator-buttons">
+                    <button class="indicator-btn active" data-indicator="candlestick" onclick="toggleIndicator(this, 'candlestick')">K線圖</button>
+                    <button class="indicator-btn" data-indicator="sma" onclick="toggleIndicator(this, 'sma')">移動平均</button>
+                    <button class="indicator-btn" data-indicator="macd" onclick="toggleIndicator(this, 'macd')">MACD</button>
+                    <button class="indicator-btn" data-indicator="rsi" onclick="toggleIndicator(this, 'rsi')">RSI</button>
+                    <button class="indicator-btn" data-indicator="bollinger" onclick="toggleIndicator(this, 'bollinger')">布林帶</button>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="stockChart"></canvas>
+            </div>
+
+            <div class="ai-analysis" id="aiAnalysis" style="display: none;">
+                <h3>🤖 AI分析報告</h3>
+                <div class="analysis-content">
+                    <div class="analysis-card">
+                        <h4>📈 趨勢分析</h4>
+                        <p id="trendAnalysis">載入中...</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>💡 操作建議</h4>
+                        <p id="recommendation">載入中...</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>⚠️ 風險評估</h4>
+                        <p id="riskAssessment">載入中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>正在分析股票資料...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

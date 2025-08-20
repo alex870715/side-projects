@@ -1,0 +1,41 @@
+{
+  "name": "taiwan-stock-ai-analyzer",
+  "version": "1.0.0",
+  "description": "台股AI分析系統 - 整合技術指標分析和AI智能建議的股票分析工具",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx live-server --port=8080 --open=/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taiwan-stock",
+    "stock-analysis",
+    "technical-indicators",
+    "ai-analysis",
+    "chart",
+    "macd",
+    "rsi",
+    "bollinger-bands",
+    "moving-average",
+    "candlestick"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/taiwan-stock-ai-analyzer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/taiwan-stock-ai-analyzer/issues"
+  },
+  "homepage": "https://github.com/yourusername/taiwan-stock-ai-analyzer#readme"
+}
